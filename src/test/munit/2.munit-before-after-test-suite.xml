@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="2.munit-before-after-test-suite.xml" />
+	<munit:before-suite name="beforeTestSuite" doc:id="abc4257d-4619-4c5a-9c44-7c277c9153d9" >
+		<logger level="INFO" doc:name="log BEFORE TEST SUITE" doc:id="5ed23f9a-d75e-4726-a02d-ec36e5ec3c14" message='"BEFORE TEST SUITE"'/>
+	</munit:before-suite>
+	<munit:after-suite name="afterTestSuite" doc:id="a23a9df2-235b-44f5-ad32-e3f118c8217e" >
+		<logger level="INFO" doc:name="log AFTERTEST SUITE" doc:id="427231b6-a4b2-49f6-9818-bc97c6290d6f" message='"AFTER TEST SUITE"'/>
+	</munit:after-suite>
+	<munit:before-test name="veforetest" doc:id="1457f9cb-5819-4e13-8c74-69efb33c7abc" >
+		<logger level="INFO" doc:name="Logger BEFORE TEST" doc:id="30847c99-b621-4d4a-b3b1-b16a2bd836f8" message='#["LOG BEFORE TEST"]'/>
+	</munit:before-test>
+	<munit:after-test name="AFTERteST" doc:id="144b7b3a-1737-4d2b-8a6d-4f4e2cde2107" >
+		<logger level="INFO" doc:name="Logger AFTER TEST" doc:id="b3888aa5-3138-450e-a267-0ad84d642e53" message='#["LOG aFTER TEST"]' />
+	</munit:after-test>
+	<munit:test name="validateFeeGreaerThan0TestCase" doc:id="ed72a6e9-26b3-460d-8bf3-5572e8b23a1d" description="Test">
+		<munit:behavior >
+			<set-payload value='#[{&#10;name: "Gustavo Carvajal",&#10;hospital: "CUF",&#10;category: "dermatology",&#10;availability: "9:00 a.m  - 11:00 a.m",&#10;fee: "5"&#10;}]' doc:name="Set Payload" doc:id="5241e929-22c7-41fe-8260-bb8f5e397f42" />
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to getMedicalAppointment" doc:id="e8b4e746-c339-43a7-b165-441dd64dc783" name="getMedicalAppointment"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that- fee is greater than 0" doc:id="2ecf437c-88f9-4cb3-812a-a511e2a6cc93" is="#[MunitTools::greaterThan(0)]" expression="#[payload.fee]"/>
+			<logger level="INFO" doc:name="log validateFeeGreaterThan0TestCase" doc:id="4d9ad7d8-e518-4b39-bda4-8940267cec7c" message="#[payload.fee]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="validatePayloadNotNullSuccessTestCase" doc:id="edecac21-6d40-4c9a-b7c0-a5fcb3193e5a" >
+		<munit:behavior>
+			<set-payload value='#[{&#10;name: "Gustavo Carvajal",&#10;hospital: "CUF",&#10;category: "dermatology",&#10;availability: "9:00 a.m  - 11:00 a.m",&#10;fee: "5"&#10;}]' doc:name="Set Payload" doc:id="27357ed6-ff92-40b6-b3c8-9f8fc4d2d9bf" />
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to getMedicalAppointment" doc:id="1ec6f681-b075-4bbb-b585-c53da22b4cbb" name="getMedicalAppointment"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that - payload not null" doc:id="6a2159ba-e039-473c-9bed-f31096bb5919" is="#[MunitTools::notNullValue()]" expression="#[payload]" message='"Payload is Null"'/>
+			<logger level="INFO" doc:name="logValidatePyaloadNOtNullSuccessTestCase" doc:id="d1906f54-b249-4849-be2f-d20bc5cde5f6" message="#[payload]"/>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>
